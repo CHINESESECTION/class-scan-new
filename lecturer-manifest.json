@@ -1,0 +1,31 @@
+{
+  "name": "UG Lecturer Portal",
+  "short_name": "UG Lecturer",
+  "description": "University of Ghana lecturer attendance and messaging portal",
+  "start_url": "./lecturer.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#07203f",
+  "theme_color": "#07203f",
+  "icons": [
+    {
+      "src": "lecturer-icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "lecturer-icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "lecturer-icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}
