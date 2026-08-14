@@ -4,7 +4,7 @@
 const CACHE = 'tcc-shell-v1';
 const SHELL = [
   '.',
-  'most updated 2.html',
+  'index.html',
   'icon-192.png',
   'icon-512.png'
 ];
@@ -25,7 +25,7 @@ self.addEventListener('activate', function(e){
 self.addEventListener('fetch', function(e){
   if(e.request.method !== 'GET') return;
   if(e.request.mode === 'navigate'){
-    e.respondWith(fetch(e.request).catch(function(){ return caches.match('most updated 2.html'); }));
+    e.respondWith(fetch(e.request).catch(function(){ return caches.match('index.html'); }));
     return;
   }
   e.respondWith(
