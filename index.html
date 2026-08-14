@@ -432,6 +432,7 @@
         .sp-cell { border-radius:6px; padding:6px 2px; text-align:center; font-size:.72rem; font-weight:700; border:1px solid transparent; }
         .sp-p { background:#e6f7ec; color:#137a3e; border-color:#b7e4c9; }
         .sp-a { background:#fdecec; color:#b3261e; border-color:#f5c2c0; }
+        .sp-e { background:#eef1f5; color:#64748b; border-color:#cbd3de; }
         .sp-f { background:#f4f4f6; color:#9aa0a6; border-color:#e3e3e6; }
         .sp-cell small { display:block; font-weight:500; font-size:.62rem; opacity:.8; margin-top:2px; }
         .sp-course { border:1px solid #e6e6ea; border-radius:8px; padding:14px; margin-bottom:14px; }
@@ -2526,14 +2527,16 @@
                     const d = new Date(start); d.setHours(0,0,0,0); d.setDate(d.getDate() + (w - 1) * 7);
                     const future = w > cur;
                     const raw = attApp.attMap.get(key + '_W' + w + '_' + s.id);
-                    weeks.push({ w: w, date: d, future: future, status: future ? '' : (raw === 'Present' ? 'Present' : 'Absent') });
+                    weeks.push({ w: w, date: d, future: future, status: future ? '' : (raw === 'Present' ? 'Present' : (raw === 'Excused' ? 'Excused' : 'Absent')) });
                 }
                 const held = weeks.filter(x => !x.future);
                 const present = held.filter(x => x.status === 'Present').length;
+                const excused = held.filter(x => x.status === 'Excused').length;
+                const countable = held.length - excused;
                 out.push({ label: lbl, display: courseDisplay(lbl), key: key, weeks: weeks, cur: cur,
-                           held: held.length, present: present, absent: held.length - present,
-                           pct: held.length ? Math.round(present * 100 / held.length) : 0,
-                           missed: held.filter(x => x.status !== 'Present').map(x => x.w) });
+                           held: held.length, present: present, excused: excused, absent: held.length - present - excused,
+                           pct: countable ? Math.round(present * 100 / countable) : 0,
+                           missed: held.filter(x => x.status !== 'Present' && x.status !== 'Excused').map(x => x.w) });
             });
             return out;
         },
@@ -2544,22 +2547,25 @@
             document.getElementById('sp-meta').innerHTML = '<span style="font-family:monospace; font-weight:700; color:var(--ug-blue);">' + s.id + '</span> &nbsp;&bull;&nbsp; Level ' + s.level + ' &nbsp;&bull;&nbsp; ' + data.length + (data.length === 1 ? ' attendance class' : ' attendance classes');
             const totalHeld = data.reduce((a, b) => a + b.held, 0);
             const totalPresent = data.reduce((a, b) => a + b.present, 0);
-            const pct = totalHeld ? Math.round(totalPresent * 100 / totalHeld) : 0;
+            const totalExcused = data.reduce((a, b) => a + (b.excused || 0), 0);
+            const totalCountable = totalHeld - totalExcused;
+            const pct = totalCountable ? Math.round(totalPresent * 100 / totalCountable) : 0;
             const col = this.tone(pct);
             const box = (v, l, c) => '<div style="flex:1; min-width:110px; background:#fafbfc; border:1px solid #eceef1; border-radius:8px; padding:12px 14px;"><div style="font-size:1.5rem; font-weight:800; color:' + (c || '#0b2545') + '; line-height:1;">' + v + '</div><div style="font-size:.75rem; color:#8a8f98; margin-top:5px; text-transform:uppercase; letter-spacing:.4px;">' + l + '</div></div>';
             document.getElementById('sp-summary').innerHTML =
                 '<div style="display:flex; gap:10px; flex-wrap:wrap;">' +
                 box(pct + '%', 'Overall attendance', col) +
                 box(totalPresent, 'Classes attended') +
-                box(Math.max(0, totalHeld - totalPresent), 'Classes missed', totalHeld - totalPresent > 0 ? '#b3261e' : '#0b2545') +
+                box(totalExcused, 'Excused', totalExcused > 0 ? '#64748b' : '#0b2545') +
+                box(Math.max(0, totalHeld - totalPresent - totalExcused), 'Classes missed', (totalHeld - totalPresent - totalExcused) > 0 ? '#b3261e' : '#0b2545') +
                 box(totalHeld, 'Classes held so far') +
                 '</div>';
             const body = document.getElementById('sp-body');
             if(data.length === 0) { body.innerHTML = "<p style='color:#8a8f98; text-align:center; padding:34px;'>This student is not enrolled in any attendance class yet.</p>"; return; }
             body.innerHTML = data.map(c => {
                 const cells = c.weeks.map(w => {
-                    const cls = w.future ? 'sp-f' : (w.status === 'Present' ? 'sp-p' : 'sp-a');
-                    const mark = w.future ? '&middot;' : (w.status === 'Present' ? 'P' : 'A');
+                    const cls = w.future ? 'sp-f' : (w.status === 'Present' ? 'sp-p' : (w.status === 'Excused' ? 'sp-e' : 'sp-a'));
+                    const mark = w.future ? '&middot;' : (w.status === 'Present' ? 'P' : (w.status === 'Excused' ? 'E' : 'A'));
                     const dt = w.date.toLocaleDateString('en-GB', { day: 'numeric', month: 'short' });
                     const tip = 'Week ' + w.w + ' (' + dt + ')' + (w.future ? ' - upcoming' : ' - ' + w.status);
                     return '<div class="sp-cell ' + cls + '" title="' + tip + '">' + mark + '<small>W' + w.w + ' ' + dt + '</small></div>';
@@ -2568,7 +2574,7 @@
                 return '<div class="sp-course">' +
                     '<div style="display:flex; justify-content:space-between; align-items:baseline; flex-wrap:wrap; gap:8px;">' +
                         '<div style="font-weight:800; color:var(--ug-blue); font-size:1.02rem;">' + c.display + '</div>' +
-                        '<div style="font-size:.86rem; color:#5b6069;">Week 1 &ndash; ' + (c.cur || 0) + ' &nbsp;|&nbsp; Present <strong style="color:' + this.tone(c.pct) + ';">' + c.present + '/' + c.held + '</strong> (' + c.pct + '%)</div>' +
+                        '<div style="font-size:.86rem; color:#5b6069;">Week 1 &ndash; ' + (c.cur || 0) + ' &nbsp;|&nbsp; Present <strong style="color:' + this.tone(c.pct) + ';">' + c.present + '/' + c.held + '</strong> (' + c.pct + '%)' + (c.excused ? ' &nbsp;|&nbsp; Excused <strong style="color:#64748b;">' + c.excused + '</strong>' : '') + '</div>' +
                     '</div>' +
                     '<div class="sp-bar"><i style="width:' + c.pct + '%;"></i></div>' +
                     '<div style="font-size:.8rem; color:#6b7078; margin:8px 0 10px 0;">' + miss + '</div>' +
