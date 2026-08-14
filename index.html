@@ -24,7 +24,8 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="Teaching Centre">
-    <link rel="manifest" id="pwa-manifest">
+    <link rel="manifest" href="manifest.webmanifest">
+    <link rel="apple-touch-icon" href="icon-512.png">
     
     <script src="https://cdn.sheetjs.com/xlsx-latest/package/dist/xlsx.full.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/exceljs/4.3.0/exceljs.min.js"></script>
@@ -91,9 +92,9 @@
         .hamburger-btn span { display: block; width: 22px; height: 2.5px; background: white; border-radius: 2px; transition: 0.2s; }
         .hamburger-btn:hover span { background: var(--ug-blue); }
         .nav-top-right { display: flex; align-items: center; gap: 10px; margin-left: auto; }
-        .main-nav { gap: 12px; }
         .install-btn { background: var(--ug-gold); border: none; color: var(--ug-blue); font-weight: 800; padding: 8px 12px; border-radius: 8px; cursor: pointer; font-size: 0.8rem; white-space: nowrap; transition: 0.2s; }
         .install-btn:hover { filter: brightness(1.08); }
+        .main-nav { gap: 12px; }
 
         /* Drawer: full screen, solid, slides from left, NO dimmed background */
         .drawer-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.45); opacity: 0; visibility: hidden; transition: opacity 0.25s ease; z-index: 1500; }
@@ -2732,28 +2733,6 @@
     let _deferredPrompt = null;
     function initPWA(){
       try {
-        // 1) Build a web app manifest on the fly (keeps everything in one HTML file)
-        var manifest = {
-          name: "UG-Chinese Teaching Command Centre",
-          short_name: "Teaching Centre",
-          description: "Class attendance, student database, messages and CHISAG management.",
-          start_url: ".",
-          scope: ".",
-          display: "standalone",
-          orientation: "portrait",
-          background_color: "#003366",
-          theme_color: "#003366",
-          icons: [
-            { src: "pwa-icon-192.png", sizes: "192x192", type: "image/png", purpose: "any maskable" },
-            { src: "pwa-icon-512.png", sizes: "512x512", type: "image/png", purpose: "any maskable" }
-          ]
-        };
-        var blob = new Blob([JSON.stringify(manifest)], { type: "application/manifest+json" });
-        var url = URL.createObjectURL(blob);
-        var link = document.getElementById("pwa-manifest");
-        if(link) link.href = url;
-
-        // 2) Register the service worker (offline shell + installability)
         if("serviceWorker" in navigator){
           navigator.serviceWorker.register("sw.js").then(function(reg){
             console.log("SW registered:", reg.scope);
@@ -2761,8 +2740,6 @@
             console.warn("SW registration failed (needs sw.js on same host):", err);
           });
         }
-
-        // 3) Capture the install prompt so we can show our own button
         window.addEventListener("beforeinstallprompt", function(e){
           e.preventDefault();
           _deferredPrompt = e;

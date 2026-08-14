@@ -5,8 +5,8 @@ const CACHE = 'tcc-shell-v1';
 const SHELL = [
   '.',
   'most updated 2.html',
-  'pwa-icon-192.png',
-  'pwa-icon-512.png'
+  'icon-192.png',
+  'icon-512.png'
 ];
 
 self.addEventListener('install', function(e){
@@ -24,7 +24,6 @@ self.addEventListener('activate', function(e){
 
 self.addEventListener('fetch', function(e){
   if(e.request.method !== 'GET') return;
-  // Network-first for navigation, cache fallback when offline
   if(e.request.mode === 'navigate'){
     e.respondWith(fetch(e.request).catch(function(){ return caches.match('most updated 2.html'); }));
     return;
