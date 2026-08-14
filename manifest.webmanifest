@@ -1,8 +1,8 @@
 {
   "name": "UG-Chinese Teaching Command Centre",
-  "short_name": "Teaching Centre",
+  "short_name": "Chinese Class",
   "description": "Class attendance, student database, messages and CHISAG management.",
-  "start_url": "./most updated 2.html",
+  "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
   "orientation": "portrait",
