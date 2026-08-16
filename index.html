@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -204,6 +205,42 @@
         .db-pill { padding: 5px 15px; border-radius: 20px; border: 1px solid var(--ug-blue); background: white; color: var(--ug-blue); cursor: pointer; transition:0.2s; }
         .db-pill.active { background: var(--ug-blue); color: white; }
         
+        /* DASHBOARD SUB-VIEW TOGGLE */
+        .dash-view-switch { display: flex; gap: 10px; margin-bottom: 25px; flex-wrap: wrap; }
+        .dash-view-btn { flex: 1; min-width: 220px; padding: 14px 18px; border-radius: 10px; border: 2px solid #e2e8f0; background: white; cursor: pointer; text-align: left; transition: 0.2s; display: flex; align-items: center; gap: 12px; }
+        .dash-view-btn:hover { border-color: var(--ug-gold); }
+        .dash-view-btn.active { border-color: var(--ug-blue); background: linear-gradient(135deg, #f0f6ff 0%, #e8f0fe 100%); box-shadow: 0 4px 10px rgba(30,64,175,0.12); }
+        .dash-view-btn .dv-ico { font-size: 1.5rem; }
+        .dash-view-btn .dv-title { font-weight: 800; color: var(--ug-blue); font-size: 0.98rem; }
+        .dash-view-btn .dv-sub { font-size: 0.78rem; color: #8a8f98; }
+        .dash-view-btn .dv-count { margin-left: auto; background: var(--danger); color: white; font-weight: 800; border-radius: 20px; padding: 3px 12px; font-size: 0.85rem; display: none; }
+        .dash-view-btn .dv-count.show { display: inline-block; }
+        
+        /* CHRONIC ABSENTEES VIEW */
+        .abs-class-block { background: white; border-radius: 8px; border: 1px solid var(--border); margin-bottom: 18px; overflow: hidden; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        .abs-class-head { background: var(--ug-blue); color: white; padding: 12px 18px; font-weight: 800; display: flex; align-items: center; justify-content: space-between; cursor: pointer; user-select: none; transition: background 0.15s; }
+        .abs-class-head:hover { background: #1e3a8a; }
+        .abs-class-head .abs-head-left { display: flex; align-items: center; gap: 10px; }
+        .abs-class-head .abs-chevron { transition: transform 0.2s; font-size: 0.9rem; display: inline-block; }
+        .abs-class-block.collapsed .abs-chevron { transform: rotate(-90deg); }
+        .abs-class-head .abs-count { background: var(--ug-gold); color: var(--ug-blue); border-radius: 20px; padding: 2px 12px; font-size: 0.85rem; }
+        .abs-class-body { display: block; }
+        .abs-class-block.collapsed .abs-class-body { display: none; }
+        .abs-student-row { display: flex; align-items: center; justify-content: space-between; padding: 11px 18px; border-bottom: 1px solid #f1f5f9; cursor: pointer; transition: 0.15s; }
+        .abs-student-row:last-child { border-bottom: none; }
+        .abs-student-row:hover { background: #fffde7; }
+        .abs-student-row .abs-name { font-weight: 700; color: var(--ug-blue); }
+        .abs-student-row .abs-id { font-family: monospace; font-size: 0.82rem; color: #8a8f98; margin-left: 8px; }
+        .abs-miss-badge { background: #fdeceb; color: var(--danger); border: 1px solid #f5c2bd; font-weight: 800; border-radius: 20px; padding: 3px 13px; font-size: 0.85rem; }
+        .abs-num { display: inline-flex; align-items: center; justify-content: center; min-width: 24px; height: 24px; background: var(--ug-blue); color: white; border-radius: 50%; font-size: 0.78rem; font-weight: 800; margin-right: 10px; }
+        .abs-new-tag { background: var(--danger); color: white; font-weight: 800; font-size: 0.68rem; letter-spacing: 0.5px; border-radius: 5px; padding: 2px 7px; margin-left: 8px; text-transform: uppercase; animation: abspulse 1.4s infinite; }
+        @keyframes abspulse { 0%{box-shadow:0 0 0 0 rgba(220,38,38,0.5);} 70%{box-shadow:0 0 0 7px rgba(220,38,38,0);} 100%{box-shadow:0 0 0 0 rgba(220,38,38,0);} }
+        .abs-detail { display: none; padding: 0 18px 16px 18px; background: #fafbfc; border-bottom: 1px solid #f1f5f9; }
+        .abs-detail.open { display: block; }
+        .abs-week-chip { display: inline-block; background: #fdeceb; color: var(--danger); border: 1px solid #f5c2bd; border-radius: 6px; padding: 4px 10px; margin: 4px 4px 0 0; font-size: 0.82rem; font-weight: 600; }
+        .abs-empty { text-align: center; color: #8a8f98; padding: 40px; font-style: italic; }
+        
+
         .modal { display: none; position: fixed; z-index: 2000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); overflow: hidden;}
         .modal-content { background: white; margin: 2% auto; padding: 25px; width: 800px; border-radius: 8px; box-shadow: 0 10px 25px rgba(0,0,0,0.2); position: relative; max-height: 90vh; display: flex; flex-direction: column; }
         .modal-close { position: absolute; top: 15px; right: 20px; font-size: 1.5rem; cursor: pointer; color: #999; z-index: 10; width: 30px; height: 30px; text-align: center; line-height: 30px; border-radius: 50%; background: #f1f1f1; }
@@ -626,8 +663,29 @@
                 <div><h2 id="cd-title" style="margin:0; font-size:1.4rem;">Loading...</h2><p id="cd-subtitle" style="margin:5px 0 0 0; opacity:0.9;">Checking calendar...</p></div>
                 <div id="cd-badge" class="badge bg-green" style="font-size:1.2rem; padding:10px 20px;">--</div>
             </div>
-            <div style="margin-bottom:30px;"><div class="section-title">Semester Overview</div><div id="dash-grid" class="course-grid"></div></div>
-            <div style="margin-bottom:30px;"><div class="section-title">Weekly Tasks</div><div id="schedule-container"></div></div>
+
+            <div class="dash-view-switch">
+                <button class="dash-view-btn active" id="dv-overview-btn" onclick="dashApp.switchDashView('overview')">
+                    <span class="dv-ico">&#128202;</span>
+                    <span><span class="dv-title">Semester Overview</span><br><span class="dv-sub">Courses, weeks &amp; weekly tasks</span></span>
+                </button>
+                <button class="dash-view-btn" id="dv-absentees-btn" onclick="dashApp.switchDashView('absentees')">
+                    <span class="dv-ico">&#9888;&#65039;</span>
+                    <span><span class="dv-title">Chronic Absentees</span><br><span class="dv-sub">Students missing 3+ classes</span></span>
+                    <span class="dv-count" id="dv-absentees-count"></span>
+                </button>
+            </div>
+
+            <div id="dash-sub-overview">
+                <div style="margin-bottom:30px;"><div class="section-title">Semester Overview</div><div id="dash-grid" class="course-grid"></div></div>
+                <div style="margin-bottom:30px;"><div class="section-title">Weekly Tasks</div><div id="schedule-container"></div></div>
+            </div>
+
+            <div id="dash-sub-absentees" style="display:none;">
+                <div class="section-title">Chronic Absentees &mdash; Missing 3 or More Classes</div>
+                <div id="absentees-container"></div>
+            </div>
+
             <div id="fab-note" title="Sticky Notes"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg></div>
         </div>
 
@@ -1418,11 +1476,26 @@
     function getDownloadFileName(prefix) { const now = new Date(); const day = now.getDate(); const month = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"][now.getMonth()]; const storageKey = `DL_Count_${prefix}_${day}${month}`; let count = parseInt(localStorage.getItem(storageKey)) || 0; count++; localStorage.setItem(storageKey, count); return `${prefix}${day}${month}${count}.xlsx`; }
 
     const db = {
-        name: "UG_Unified_DB_Mohammed_v13", version: 11, // Incremented to add raw_logs
+        name: "UG_Unified_DB_Mohammed_v13", version: 13, // Bumped to force clean upgrade (adds absenteeSeen store) and recover from blocked/stale connections
         db: null,
-        open: function() { return new Promise((resolve, reject) => { const req = indexedDB.open(this.name, this.version); req.onupgradeneeded = e => { const d = e.target.result; if(!d.objectStoreNames.contains('students')) { const s = d.createObjectStore('students', {keyPath:'id'}); s.createIndex("level", "level", {unique:false}); } if(!d.objectStoreNames.contains('attendance')) d.createObjectStore('attendance', {keyPath:'key'}); if(!d.objectStoreNames.contains('tasks')) d.createObjectStore('tasks', {keyPath:'key'}); if(!d.objectStoreNames.contains('notes')) d.createObjectStore('notes', {keyPath:'id'}); if(!d.objectStoreNames.contains('settings')) d.createObjectStore('settings', {keyPath:'key'}); if(!d.objectStoreNames.contains('archives')) d.createObjectStore('archives', {keyPath:'key'}); if(!d.objectStoreNames.contains('ta_store')) d.createObjectStore('ta_store', {keyPath:'id'}); if(!d.objectStoreNames.contains('chisag_members')) d.createObjectStore('chisag_members', {keyPath:'id'}); 
+        open: function() { return new Promise((resolve, reject) => {
+            const req = indexedDB.open(this.name, this.version);
+            req.onupgradeneeded = e => { const d = e.target.result; if(!d.objectStoreNames.contains('students')) { const s = d.createObjectStore('students', {keyPath:'id'}); s.createIndex("level", "level", {unique:false}); } if(!d.objectStoreNames.contains('attendance')) d.createObjectStore('attendance', {keyPath:'key'}); if(!d.objectStoreNames.contains('tasks')) d.createObjectStore('tasks', {keyPath:'key'}); if(!d.objectStoreNames.contains('notes')) d.createObjectStore('notes', {keyPath:'id'}); if(!d.objectStoreNames.contains('settings')) d.createObjectStore('settings', {keyPath:'key'}); if(!d.objectStoreNames.contains('archives')) d.createObjectStore('archives', {keyPath:'key'}); if(!d.objectStoreNames.contains('ta_store')) d.createObjectStore('ta_store', {keyPath:'id'}); if(!d.objectStoreNames.contains('chisag_members')) d.createObjectStore('chisag_members', {keyPath:'id'});
         // NEW RAW LOGS STORE
-        if(!d.objectStoreNames.contains('scan_logs')) { const sl = d.createObjectStore('scan_logs', {keyPath:'id'}); sl.createIndex('course', 'course', {unique:false}); } }; req.onsuccess = e => { this.db = e.target.result; resolve(); }; req.onerror = e => reject(e); }); },
+        if(!d.objectStoreNames.contains('scan_logs')) { const sl = d.createObjectStore('scan_logs', {keyPath:'id'}); sl.createIndex('course', 'course', {unique:false}); }
+        // v2: seen/acknowledged chronic-absentees (so the NEW tag can be cleared)
+        if(!d.objectStoreNames.contains('absenteeSeen')) d.createObjectStore('absenteeSeen', {keyPath:'key'}); };
+            req.onsuccess = e => { this.db = e.target.result;
+                // If another tab upgrades the DB, close this connection so it doesn't block the upgrade.
+                this.db.onversionchange = () => { try { this.db.close(); } catch(_) {} };
+                resolve(); };
+            req.onerror = e => reject(req.error || e);
+            // If another open tab/window is holding an older version of the DB open, the upgrade gets BLOCKED.
+            // Surface it instead of hanging forever (which previously made login appear dead).
+            req.onblocked = e => { console.warn('DB open BLOCKED: another tab/window has the app open. Please close other tabs of this app and reload.'); reject(new Error('DB blocked by another open tab')); };
+            // Safety timeout: never leave the promise pending forever.
+            setTimeout(() => { if(!this.db) { console.warn('DB open timed out'); reject(new Error('DB open timeout')); } }, 8000);
+        }); },
         getAll: function(store) { return new Promise(r => this.db.transaction(store,'readonly').objectStore(store).getAll().onsuccess = e => r(e.target.result)); },
         put: function(store, item) { return new Promise(r => this.db.transaction(store,'readwrite').objectStore(store).put(item).onsuccess = () => r()); },
         get: function(store, key) { return new Promise(r => this.db.transaction(store,'readonly').objectStore(store).get(key).onsuccess = e => r(e.target.result)); },
@@ -1482,7 +1555,20 @@
         },
         toggleEye: function(id) { const input = document.getElementById(id); input.type = input.type === 'password' ? 'text' : 'password'; },
         setup: async function() { const p1 = document.getElementById('setup-pin').value; const p2 = document.getElementById('setup-pin-confirm').value; if(p1.length !== 5 || isNaN(p1)) return alert("PIN must be 5 digits."); if(p1 !== p2) return alert("PINs do not match."); await db.put('settings', {key: 'auth_pin', value: p1}); alert("Set PIN Successful"); location.reload(); },
-        login: async function() { const input = document.getElementById('login-pin').value; const pinRec = await db.get('settings', 'auth_pin'); const stored = pinRec ? pinRec.value : null; if(input === stored || input === '00000') { document.getElementById('auth-overlay').style.display = 'none'; document.getElementById('main-app').classList.remove('hidden-app'); this.unlockSystem(); } else { alert("Incorrect PIN"); document.getElementById('login-pin').value = ''; } },
+        login: async function() {
+            try {
+                if(!db.db) { try { await db.open(); } catch(e) {} }
+                if(!db.db) { alert("Database could not open. Please CLOSE any other tab/window running this app, then reload this page and try again."); return; }
+                const input = document.getElementById('login-pin').value;
+                const pinRec = await db.get('settings', 'auth_pin');
+                const stored = pinRec ? pinRec.value : null;
+                if(input === stored || input === '00000') {
+                    document.getElementById('auth-overlay').style.display = 'none';
+                    document.getElementById('main-app').classList.remove('hidden-app');
+                    try { await this.unlockSystem(); } catch(e) { console.error('unlock error', e); }
+                } else { alert("Incorrect PIN"); document.getElementById('login-pin').value = ''; }
+            } catch(e) { alert("Login error: " + (e && e.message ? e.message : e)); }
+        },
         unlockSystem: async function() { const savedConfig = await db.get('settings', 'config'); if(savedConfig) { sysConfig = savedConfig.value; window.sysConfig = sysConfig; window.db = db; document.getElementById('sys-name-display').innerText = sysConfig.name; dashApp.init(); attApp.init(); scanSyncApp.start(); if(studentPortalApp && studentPortalApp.updateNotifyToggle) studentPortalApp.updateNotifyToggle(); if(studentPortalApp && studentPortalApp.refreshAlert) studentPortalApp.refreshAlert(); setTimeout(function(){ if(typeof tourStart==='function') tourStart(); }, 600); } else { setupApp.open(); } },
         logout: function() { location.reload(); }
     };
@@ -1621,7 +1707,7 @@
     attApp = { 
         students: [], cache: [], attMap: new Map(), course: "", week: 1, sortCol: 'name', sortAsc: true, pending: [], pendingBatch: [], isManageMode: false, selected: new Set(), currentWeekVal: 0, scanTargetWeeks: [], scanTargetCourses: [], tempRawData: null,
         init: async function() { await this.sync(); }, 
-        sync: async function() { this.cache = await db.getAll('students'); const recs = await db.getAll('attendance'); this.attMap.clear(); recs.forEach(r => this.attMap.set(r.key, r.status)); dbView.init(); }, 
+        sync: async function() { this.cache = await db.getAll('students'); const recs = await db.getAll('attendance'); this.attMap.clear(); recs.forEach(r => this.attMap.set(r.key, r.status)); dbView.init(); if (typeof dashApp !== 'undefined' && dashApp && dashApp.dashView) { if (dashApp.dashView === 'absentees') dashApp.renderAbsentees(); else { const badge = document.getElementById('dv-absentees-count'); if (badge) { const prev = dashApp.dashView; dashApp.dashView = 'absentees'; dashApp.renderAbsentees(); dashApp.dashView = prev; } } } }, 
         setCurrWeek: function(w) { this.currentWeekVal = w; this.updateContext(); }, 
         updateContext: async function() { 
             const selC = document.getElementById("course-select"); if (selC.options.length === 0) { sysConfig.attCourses.forEach(c => { const opt = document.createElement("option"); opt.value = ck(c); opt.text = courseDisplay(c); selC.appendChild(opt); }); if (sysConfig.attCourses.length > 0) this.course = sysConfig.attCourses[0].replace(/\s/g, ''); } else { this.course = selC.value; } if (!this.course && selC.options.length > 0) { this.course = selC.options[0].value; selC.value = this.course; } 
@@ -2326,7 +2412,116 @@
         }, toggleWeek: function(w) { this.openWeeks[w] = !this.openWeeks[w]; this.render(); }, toggleTask: async function(w, c, type) { const key = `w${w}_${c}`; if(!this.tasks[key]) this.tasks[key] = {key, week:w, course:c, notes:false, assign:false}; this.tasks[key][type] = !this.tasks[key][type]; this.render(); await db.put('tasks', this.tasks[key]); }, render: function() { const t = document.getElementById('cd-title'), s = document.getElementById('cd-subtitle'), b = document.getElementById('cd-badge'); const total = sysConfig.totalWeeks; if(this.currentWeek<1) { t.innerText="Semester Starts Soon"; b.innerText="WAITING"; } else if(this.currentWeek>total) { t.innerText="Semester Complete"; b.innerText="DONE"; } else { t.innerText=`Current Week: ${this.currentWeek}`; s.innerText=`${total-this.currentWeek} remaining`; b.innerText=`WEEK ${this.currentWeek}`; } let stats = {}; sysConfig.teachCourses.forEach(c => stats[c]={n:0,a:0}); Object.values(this.tasks).forEach(t => { if(sysConfig.teachCourses.includes(t.course)) { if(t.notes) stats[t.course].n++; if(t.assign) stats[t.course].a++; } }); const grid = document.getElementById('dash-grid'); grid.innerHTML = ''; sysConfig.teachCourses.forEach(c => { grid.innerHTML += `<div class="course-card"><div class="cc-header"><div class="cc-title">${c}</div><div class="cc-avatar">${c.split(' ')[1]||'C'}</div></div><div class="cc-stat"><span style="color:#666">Notes:</span> <strong>${stats[c].n}/${total}</strong></div><div class="cc-stat"><span style="color:#666">Assign:</span> <strong>${stats[c].a}/${total}</strong></div></div>`; }); const sched = document.getElementById('schedule-container'); sched.innerHTML = ''; this.weeks.forEach(w => { const open = this.openWeeks[w], active = (w===this.currentWeek); let rows = ''; sysConfig.teachCourses.forEach(c => { const st = this.tasks[`w${w}_${c}`] || {}; rows += `<tr><td style="font-weight:bold; color:var(--ug-blue)">${c}</td><td><button class="task-btn ${st.notes?'done':''}" onclick="dashApp.toggleTask(${w},'${c}','notes')">${st.notes?'✔ Notes Given':'○ Give Notes'}</button></td><td><button class="task-btn ${st.assign?'done':''}" onclick="dashApp.toggleTask(${w},'${c}','assign')">${st.assign?'✔ Assign. Given':'○ Give Assign.'}</button></td></tr>`; }); 
         const badgeHtml = active ? `<span class="curr-week-badge">CURRENT WEEK</span>` : '';
         const activeHeader = `<div style="display:flex; align-items:center;"><span style="font-weight:bold; font-size:${active?'1.1rem':'1rem'};">${getWeekLabel(w)}</span> ${badgeHtml}</div>`;
-        sched.innerHTML += `<div class="week-row ${active?'active-week':''}"><div class="week-row-header" onclick="dashApp.toggleWeek(${w})"><div>${activeHeader}</div><div>${open?'▼':'▶'}</div></div><div class="week-content ${open?'open':''}"><table class="task-table"><thead><tr><th>Course</th><th>Notes</th><th>Assignment</th></tr></thead><tbody>${rows}</tbody></table></div></div>`; }); } };
+        sched.innerHTML += `<div class="week-row ${active?'active-week':''}"><div class="week-row-header" onclick="dashApp.toggleWeek(${w})"><div>${activeHeader}</div><div>${open?'▼':'▶'}</div></div><div class="week-content ${open?'open':''}"><table class="task-table"><thead><tr><th>Course</th><th>Notes</th><th>Assignment</th></tr></thead><tbody>${rows}</tbody></table></div></div>`; });
+        },
+        /* ===== v2: DASHBOARD SUB-VIEWS ===== */
+        dashView: 'overview',
+        switchDashView: function(v) {
+            this.dashView = v;
+            document.getElementById('dv-overview-btn').classList.toggle('active', v === 'overview');
+            document.getElementById('dv-absentees-btn').classList.toggle('active', v === 'absentees');
+            document.getElementById('dash-sub-overview').style.display = (v === 'overview') ? 'block' : 'none';
+            document.getElementById('dash-sub-absentees').style.display = (v === 'absentees') ? 'block' : 'none';
+            if (v === 'absentees') this.renderAbsentees();
+        },
+        _missedWeeksForCourse: function(s, course) {
+            const key = course.replace(/\s/g, '');
+            const full = course !== key ? course : (sysConfig.attCourses.find(c => c.replace(/\s/g, '') === key) || course);
+            let startDate = new Date(sysConfig.startDate);
+            if (sysConfig.courseDates && sysConfig.courseDates[full]) startDate = new Date(sysConfig.courseDates[full]);
+            startDate.setHours(0, 0, 0, 0);
+            const today = new Date(); today.setHours(0, 0, 0, 0);
+            const missed = [];
+            for (let w = 1; w <= sysConfig.totalWeeks; w++) {
+                let d = new Date(startDate); d.setDate(d.getDate() + (w - 1) * 7); d.setHours(0, 0, 0, 0);
+                if (d > today) continue;
+                const raw = attApp.attMap.get(key + '_W' + w + '_' + s.id);
+                const status = (raw === 'Present') ? 'Present' : (raw === 'Excused' ? 'Excused' : 'Absent');
+                if (status === 'Absent') missed.push(w);
+            }
+            return missed;
+        },
+        renderAbsentees: async function() {
+            const THRESHOLD = 3;
+            // load the set of student-course pairs already acknowledged (clicked) before
+            let seenKeys = {};
+            try {
+                const seenRows = await db.getAll('absenteeSeen');
+                seenRows.forEach(r => { if (r && r.key) seenKeys[r.key] = true; });
+            } catch (e) { /* store may not exist on very old DBs */ }
+            const students = attApp.cache && attApp.cache.length ? attApp.cache : (dbView && dbView.allStudents ? dbView.allStudents : []);
+            const byCourse = {};
+            students.forEach(s => {
+                if (!s.courses || !s.courses.length) return;
+                s.courses.forEach(course => {
+                    const missed = this._missedWeeksForCourse(s, course);
+                    if (missed.length >= THRESHOLD) {
+                        if (!byCourse[course]) byCourse[course] = [];
+                        const seenKey = course + '|' + s.id;
+                        byCourse[course].push({ id: s.id, name: s.name, missed: missed, isNew: !seenKeys[seenKey] });
+                    }
+                });
+            });
+            const container = document.getElementById('absentees-container');
+            const courseKeys = Object.keys(byCourse);
+            const totalFlagged = courseKeys.reduce((a, c) => a + byCourse[c].length, 0);
+            const newCount = courseKeys.reduce((a, c) => a + byCourse[c].filter(x => x.isNew).length, 0);
+            const badge = document.getElementById('dv-absentees-count');
+            if (totalFlagged > 0) { badge.innerText = totalFlagged; badge.classList.add('show'); }
+            else { badge.classList.remove('show'); }
+            if (courseKeys.length === 0) {
+                container.innerHTML = '<div class="abs-empty">No students have missed 3 or more classes yet.</div>';
+                return;
+            }
+            courseKeys.sort((a, b) => {
+                const ia = sysConfig.teachCourses.indexOf(a), ib = sysConfig.teachCourses.indexOf(b);
+                if (ia === -1 && ib === -1) return a.localeCompare(b);
+                if (ia === -1) return 1; if (ib === -1) return -1; return ia - ib;
+            });
+            let html = '';
+            courseKeys.forEach(course => {
+                const list = byCourse[course];
+                list.sort((a, b) => b.missed.length - a.missed.length || a.name.localeCompare(b.name));
+                let rows = '';
+                list.forEach((item, idx) => {
+                    const num = idx + 1; // numbering restarts at 1 for each course
+                    const chips = item.missed.map(w => '<span class="abs-week-chip" title="Week ' + w + '">Week ' + w + '</span>').join('');
+                    const newTag = item.isNew ? '<span class="abs-new-tag" id="abs-new-' + course.replace(/\s/g, '_') + '-' + item.id + '">NEW</span>' : '';
+                    rows += '<div class="abs-student-row" onclick="dashApp.toggleAbsenteeDetail(\'' + course.replace(/'/g, "\\'") + '\', \'' + item.id + '\')">' +
+                        '<span><span class="abs-num">' + num + '</span><span class="abs-name">' + item.name + '</span><span class="abs-id">' + item.id + '</span>' + newTag + '</span>' +
+                        '<span class="abs-miss-badge">' + item.missed.length + ' missed</span>' +
+                        '</div>' +
+                        '<div class="abs-detail" id="abs-det-' + course.replace(/\s/g, '_') + '-' + item.id + '">' +
+                        '<div style="font-size:0.82rem; color:#8a8f98; margin-bottom:6px;">' + item.name + ' &mdash; missed ' + item.missed.length + ' class(es) in <strong>' + course + '</strong>:</div>' +
+                        chips +
+                        '</div>';
+                });
+                // course block starts collapsed (accordion). Click header to expand/collapse students.
+                html += '<div class="abs-class-block collapsed" data-course="' + course.replace(/"/g, '&quot;') + '">' +
+                    '<div class="abs-class-head" onclick="dashApp.toggleAbsenteeCourse(\'' + course.replace(/'/g, "\\'") + '\')">' +
+                        '<span class="abs-head-left"><span class="abs-chevron">&#9660;</span><span>' + course + '</span></span>' +
+                        '<span class="abs-count">' + list.length + ' student(s)</span>' +
+                    '</div>' +
+                    '<div class="abs-class-body">' + rows + '</div>' +
+                    '</div>';
+            });
+            container.innerHTML = html;
+        },
+        toggleAbsenteeCourse: function(course) {
+            const block = document.querySelector('.abs-class-block[data-course="' + course.replace(/"/g, '\\"') + '"]');
+            if (block) block.classList.toggle('collapsed');
+        },
+        toggleAbsenteeDetail: function(course, id) {
+            const el = document.getElementById('abs-det-' + course.replace(/\s/g, '_') + '-' + id);
+            if (el) el.classList.toggle('open');
+            // acknowledge this student-course pair so the NEW tag disappears permanently
+            const tag = document.getElementById('abs-new-' + course.replace(/\s/g, '_') + '-' + id);
+            if (tag) {
+                tag.remove();
+                try { db.put('absenteeSeen', { key: course + '|' + id }); } catch (e) {}
+            }
+        }
+    };
     
     // --- DB VIEW ---
    dbView = { 
@@ -2532,10 +2727,12 @@
                 const held = weeks.filter(x => !x.future);
                 const present = held.filter(x => x.status === 'Present').length;
                 const excused = held.filter(x => x.status === 'Excused').length;
-                const countable = held.length - excused;
+                // v2: Excused is treated as Present for the percentage (excused counts toward attendance)
+                const counted = present + excused;
+                const countable = held.length;
                 out.push({ label: lbl, display: courseDisplay(lbl), key: key, weeks: weeks, cur: cur,
                            held: held.length, present: present, excused: excused, absent: held.length - present - excused,
-                           pct: countable ? Math.round(present * 100 / countable) : 0,
+                           pct: countable ? Math.round(counted * 100 / countable) : 0,
                            missed: held.filter(x => x.status !== 'Present' && x.status !== 'Excused').map(x => x.w) });
             });
             return out;
@@ -2548,8 +2745,10 @@
             const totalHeld = data.reduce((a, b) => a + b.held, 0);
             const totalPresent = data.reduce((a, b) => a + b.present, 0);
             const totalExcused = data.reduce((a, b) => a + (b.excused || 0), 0);
-            const totalCountable = totalHeld - totalExcused;
-            const pct = totalCountable ? Math.round(totalPresent * 100 / totalCountable) : 0;
+            // v2: Excused is treated as Present for the overall percentage
+            const totalCounted = totalPresent + totalExcused;
+            const totalCountable = totalHeld;
+            const pct = totalCountable ? Math.round(totalCounted * 100 / totalCountable) : 0;
             const col = this.tone(pct);
             const box = (v, l, c) => '<div style="flex:1; min-width:110px; background:#fafbfc; border:1px solid #eceef1; border-radius:8px; padding:12px 14px;"><div style="font-size:1.5rem; font-weight:800; color:' + (c || '#0b2545') + '; line-height:1;">' + v + '</div><div style="font-size:.75rem; color:#8a8f98; margin-top:5px; text-transform:uppercase; letter-spacing:.4px;">' + l + '</div></div>';
             document.getElementById('sp-summary').innerHTML =
@@ -2574,7 +2773,7 @@
                 return '<div class="sp-course">' +
                     '<div style="display:flex; justify-content:space-between; align-items:baseline; flex-wrap:wrap; gap:8px;">' +
                         '<div style="font-weight:800; color:var(--ug-blue); font-size:1.02rem;">' + c.display + '</div>' +
-                        '<div style="font-size:.86rem; color:#5b6069;">Week 1 &ndash; ' + (c.cur || 0) + ' &nbsp;|&nbsp; Present <strong style="color:' + this.tone(c.pct) + ';">' + c.present + '/' + c.held + '</strong> (' + c.pct + '%)' + (c.excused ? ' &nbsp;|&nbsp; Excused <strong style="color:#64748b;">' + c.excused + '</strong>' : '') + '</div>' +
+                        '<div style="font-size:.86rem; color:#5b6069;">Week 1 &ndash; ' + (c.cur || 0) + ' &nbsp;|&nbsp; Present <strong style="color:' + this.tone(c.pct) + ';">' + c.present + '/' + c.held + '</strong> (' + c.pct + '%)' + '</div>' +
                     '</div>' +
                     '<div class="sp-bar"><i style="width:' + c.pct + '%;"></i></div>' +
                     '<div style="font-size:.8rem; color:#6b7078; margin:8px 0 10px 0;">' + miss + '</div>' +
